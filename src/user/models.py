@@ -72,7 +72,7 @@ class User(AbstractUser):
     )
     gender = models.CharField(
         _("Gender"),
-        max_length=20,
+        max_length=50,
         choices=Genders.choices(),
         default=Genders.RATHER_NOT_TO_SAY,
     )

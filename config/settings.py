@@ -37,7 +37,7 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = ["corsheaders", "mptt"]
 
-LOCAL_APPS = ["src.course"]
+LOCAL_APPS = ["src.user", "src.course"]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -175,5 +175,3 @@ LOGGING = {
     },
     "root": {"level": "INFO", "handlers": ["console"]},
 }
-
-
