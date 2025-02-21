@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+  Home
+{% endblock %}
+
+{% block content %}
+  <link rel="stylesheet" href="{% static 'css/home.css' %}" />
+  <div class="container mt-5 py pt-5 pb-5" style="background-color: #ddd; padding: 20px; border-radius: 10px;">
+    <h1 class="text-center mb-4 fw-bold" style="font-size: 3rem; color: #2c3e50">Course Management System</h1>
+    <p class="text-center mb-5" style="font-size: 1.2rem; color: #7f8c8d">Manage courses, categories, students, and enrollments with ease.</p>
+
+    <div class="row gap-4 justify-content-center">
+      <!-- Card Component -->
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm rounded-lg text-center p-3 card-hover">
+          <div class="card-body">
+            <h2 class="text-uppercase fw-bold text-muted" style="font-size: 1.5rem;">Categories</h2>
+            <h3 class="fw-bold text-dark">{{ categories_count }}</h3>
+            <div class="d-flex align-items-center justify-content-between mt-2">
+              <a href="#" class="text-decoration-none text-primary fw-semibold">View Categories</a>
+              <button class="btn btn-add btn-sm"><i class="fas fa-plus"></i>&nbsp;&nbsp;Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm rounded-lg text-center p-3 card-hover">
+          <div class="card-body">
+            <h2 class="text-uppercase fw-bold text-muted" style="font-size: 1.5rem;">Courses</h2>
+            <h3 class="fw-bold text-dark">{{ courses_count }}</h3>
+            <div class="d-flex align-items-center justify-content-between mt-2">
+              <a href="#" class="text-decoration-none text-primary fw-semibold">View Courses</a>
+              <button class="btn btn-add btn-sm"><i class="fas fa-plus"></i>&nbsp;&nbsp;Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm rounded-lg text-center p-3 card-hover">
+          <div class="card-body">
+            <h2 class="text-uppercase fw-bold text-muted" style="font-size: 1.5rem;">Students</h2>
+            <h3 class="fw-bold text-dark">{{ students_count }}</h3>
+            <div class="d-flex align-items-center justify-content-between mt-2">
+              <a href="#" class="text-decoration-none text-primary fw-semibold">View Students</a>
+              <button class="btn btn-add btn-sm"><i class="fas fa-plus"></i>&nbsp;&nbsp;Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm rounded-lg text-center p-3 card-hover">
+          <div class="card-body">
+            <h2 class="text-uppercase fw-bold text-muted" style="font-size: 1.5rem;">Enrollments</h2>
+            <h3 class="fw-bold text-dark">{{ enrollments_count }}</h3>
+            <div class="d-flex align-items-center justify-content-between mt-2">
+              <a href="#" class="text-decoration-none text-primary fw-semibold">View Enrollments</a>
+              <button class="btn btn-add btn-sm"><i class="fas fa-plus"></i>&nbsp;&nbsp;Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
