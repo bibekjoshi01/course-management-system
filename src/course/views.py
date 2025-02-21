@@ -29,9 +29,7 @@ class AddCategoryView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         return self.request.user.is_staff
 
 
-
 class CategoryListView(ListView):
     model = Category
     template_name = "categories/view_categories.html"
     context_object_name = 'categories'  
-    paginate_by = 10  
