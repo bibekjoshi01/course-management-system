@@ -11,7 +11,9 @@ from src.user.models import User
 class Student(AbstractInfoModel):
     """Represents a Student model linked with User model"""
 
-    user = models.OneToOneField(User, on_delete=models.PROTECT, related_name="student")
+    user = models.OneToOneField(
+        User, on_delete=models.PROTECT, related_name="student_info"
+    )
 
     class Meta:
         verbose_name = _("Student")

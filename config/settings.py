@@ -37,7 +37,7 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = ["corsheaders", "mptt"]
 
-LOCAL_APPS = ["src.user", "src.course"]
+LOCAL_APPS = ["src.user", "src.course", "src.student"]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
