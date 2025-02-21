@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  View Categories
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h2 class="text-center mb-4">View Categories</h2>
+
+    <div class="mb-4 text-end">
+      <a href="{% url 'add_category' %}" class="btn btn-primary"><i class="fas fa-plus"></i>&nbsp; Add Category</a>
+    </div>
+
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Category Name</th>
+          <th>Parent Category</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for category in categories %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ category.name }}</td>
+            <td>
+              {% if category.parent %}
+                {{ category.parent.name }}
+              {% else %}
+                N/A
+              {% endif %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="4" class="text-center">No categories available.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

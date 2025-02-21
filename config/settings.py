@@ -35,7 +35,7 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
-THIRD_PARTY_APPS = ["corsheaders", "mptt"]
+THIRD_PARTY_APPS = ["corsheaders", "mptt", "widget_tweaks"]
 
 LOCAL_APPS = ["src.user", "src.course", "src.student"]
 

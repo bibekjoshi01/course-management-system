@@ -19,6 +19,7 @@ class Category(AbstractInfoModel, MPTTModel):
     parent = TreeForeignKey(
         "self",
         on_delete=models.CASCADE,
+        blank=True,
         null=True,
         related_name="subcategories",
         help_text=_("Parent category if this is a subcategory."),
