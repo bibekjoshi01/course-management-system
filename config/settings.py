@@ -120,6 +120,14 @@ ENCRYPTION_KEY = "UvWTfhGVR2iVUI15zKqF8t54cDu0B_pzyicdearnTDI="
 # ------------------------------------------------------------------------------
 FIXTURE_DIRS = (str(APPS_DIR / "fixtures"),)
 
+# AUTHENTICATION
+# ------------------------------------------------------------------------------
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+]
+
+AUTH_USER_MODEL = "user.User"
+
 # Internationalization
 # ------------------------------------------------------------------------------
 LANGUAGE_CODE = "en-us"
