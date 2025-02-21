@@ -146,7 +146,7 @@ class CourseDocument(AbstractInfoModel):
 
 
 
-class Quiz(AbstractInfoModel):
+class CourseQuiz(AbstractInfoModel):
     """Represents a Quiz related to a Course."""
 
     course = models.ForeignKey(
@@ -167,11 +167,11 @@ class Quiz(AbstractInfoModel):
         return self.title
 
 
-class Question(AbstractInfoModel):
+class QuizQuestion(AbstractInfoModel):
     """Represents a Question associated with a Quiz."""
 
     quiz = models.ForeignKey(
-        Quiz, on_delete=models.CASCADE, related_name="questions"
+        CourseQuiz, on_delete=models.CASCADE, related_name="questions"
     )
     text = models.TextField(
         _("Question Text"),
@@ -186,11 +186,11 @@ class Question(AbstractInfoModel):
         return self.text[:100]  
 
 
-class Answer(AbstractInfoModel):
+class QuizAnswer(AbstractInfoModel):
     """Represents an Answer associated with a Question."""
     
     question = models.ForeignKey(
-        Question, on_delete=models.CASCADE, related_name="answers"
+        QuizQuestion, on_delete=models.CASCADE, related_name="answers"
     )
     text = models.CharField(
         _("Answer Text"),
