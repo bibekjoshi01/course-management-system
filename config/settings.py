@@ -1,6 +1,5 @@
 # ruff: noqa: ERA001, E501, S105
 
-from datetime import timedelta
 from pathlib import Path
 
 import environ
@@ -20,9 +19,6 @@ SECRET_KEY = env(
 )
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["*"])
 
-CORS_ALLOW_ALL_ORIGINS = env.bool("CORS_ALLOW_ALL_ORIGINS")
-CORS_ALLOWED_ORGINS = env.list("CORS_ALLOWED_ORIGINS")
-
 
 # APPS
 # ------------------------------------------------------------------------------
@@ -35,7 +31,7 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
-THIRD_PARTY_APPS = ["corsheaders", "mptt", "widget_tweaks"]
+THIRD_PARTY_APPS = ["mptt", "widget_tweaks"]
 
 LOCAL_APPS = ["src.user", "src.course", "src.student"]
 
