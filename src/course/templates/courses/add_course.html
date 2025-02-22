@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <h2>Add Course</h2>
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+
+      <!-- Course Video -->
+      <h3>Add Course Video</h3>
+      {{ video_form.as_p }}
+
+      <!-- Course Document -->
+      <h3>Add Course Document</h3>
+      {{ document_form.as_p }}
+
+      <!-- Course Quiz -->
+      <h3>Add Course Quiz</h3>
+      {{ quiz_form.as_p }}
+
+      <!-- Quiz Questions and Answers -->
+      <h3>Quiz Questions and Answers</h3>
+      <div>
+        <label for="questions">Enter Questions</label>
+        <textarea id="questions" name="questions"></textarea>
+      </div>
+      <div>
+        <label for="answers">Enter Answers</label>
+        <textarea id="answers" name="answers"></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Add Course</button>
+    </form>
+  </div>
+{% endblock %}

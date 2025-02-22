@@ -1,11 +1,15 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.views import View
 from src.course.models import Category, Course
 from src.student.models import Student, StudentEnrollment
 
-class DashboardView(View):
+
+class DashboardView(LoginRequiredMixin, View):
     """View to represent Dashboard of the CMS"""
     
+    login_url = '/admin/login/'  
+
     def get(self, request):
         context = {
             "categories_count": Category.objects.filter(is_active=True).count(),
