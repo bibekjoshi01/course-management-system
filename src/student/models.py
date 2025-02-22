@@ -1,5 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.core.mail import send_mail
+from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
 # Project Imports
@@ -9,7 +11,7 @@ from src.user.models import User
 
 
 class Student(AbstractInfoModel):
-    """Represents a Student model linked with User model"""
+    """Represents a Student model linked with the User model"""
 
     user = models.OneToOneField(
         User, on_delete=models.PROTECT, related_name="student_info"
@@ -19,6 +21,34 @@ class Student(AbstractInfoModel):
         verbose_name = _("Student")
         verbose_name_plural = _("Students")
 
+    def __str__(self) -> str:
+        """String representation of the student."""
+        return self.user.email
+
+    def send_creation_email(self):
+        """Send an email to the student with their login credentials."""
+        password = self.user.password  
+        subject = "Your Student Account"
+        message = (
+            f"Hello, {self.user.first_name}!\n\n"
+            f"Your account has been created. You can now log in with your email address and the following password:\n\n"
+            f"Password: {password}\n\n"
+            f"Please change your password after logging in for security reasons."
+        )
+
+        send_mail(
+            subject=subject,
+            message=message,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[self.user.email],
+        )
+
+    def save(self, *args, **kwargs):
+        is_new = self.pk is None  
+        super().save(*args, **kwargs) 
+        if is_new:
+            self.send_creation_email()  
+    
     def __str__(self) -> str:
         return self.user.email
 

@@ -1,11 +1,10 @@
 # Django Imports
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.core.mail import send_mail
 from django.urls import reverse_lazy
-from django.contrib.auth.hashers import make_password
-from django.conf import settings
 from django.utils import timezone
+
+from src.course.models import Course
 
 # Project Imports
 from .models import Student, StudentEnrollment
@@ -45,27 +44,18 @@ class StudentCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         password = generate_strong_password()
 
         # Create User model entry
-        user = User.objects.create(
+        user = User.objects.create_student(
             first_name=first_name,
             last_name=last_name,
             username=email,
             email=email,
-            password=make_password(password),
+            password=password,
         )
 
         # Create Student entry
         Student.objects.create(user=user)
-
-        # Send email with login credentials
-        send_mail(
-            subject="Your Student Account",
-            message=f"Hello, {first_name}! Your account has been created. Your password is: {password}",
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[email],
-        )
-
         return super().form_valid(form)
-
+    
     def test_func(self):
         """Ensure the user is an admin."""
         return self.request.user.is_staff
@@ -75,7 +65,7 @@ class StudentEnrollmentListView(ListView):
     """View for listing all student enrollments."""
 
     model = StudentEnrollment
-    template_name = "students/enrollment_list.html"
+    template_name = "enrollments/view_enrollments.html"
     context_object_name = "enrollments"
 
     def get_queryset(self):
@@ -87,22 +77,46 @@ class StudentEnrollmentCreateView(LoginRequiredMixin, UserPassesTestMixin, Creat
 
     model = StudentEnrollment
     form_class = StudentEnrollmentForm
-    template_name = "students/enroll_student.html"
+    template_name = "enrollments/add_enrollment.html"
     success_url = reverse_lazy("list_enrollments")
 
     def form_valid(self, form):
-        """Handling student creation."""
-
-        student = form.cleaned_data["student"]
-        course = form.cleaned_data["course"]
         form.instance.created_by = self.request.user
-
-        if StudentEnrollment.objects.filter(student=student, course=course).exists():
-            form.add_error(None, "This student is already enrolled in this course.")
-            return self.form_invalid(form)
 
         # Set the enrollment date
         enrollment_date = timezone.now()
         form.instance.enrollment_date = enrollment_date
 
         return super().form_valid(form)
+
+    def test_func(self):
+        """Ensure the user is an admin."""
+        return self.request.user.is_staff
+
+
+class CourseEnrollmentListView(ListView):
+    model = Course
+    template_name = "enrollments/course_list.html"
+    context_object_name = "courses"
+
+    def get_queryset(self):
+        return Course.objects.prefetch_related("enrollments").all()
+
+
+class CourseWiseEnrollmentView(DetailView):
+    model = Course
+    template_name = "enrollments/course_enrollments.html"
+    context_object_name = "course"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        enrollments = StudentEnrollment.objects.filter(course=self.object)
+        for enrollment in enrollments:
+            student = enrollment.student.user
+            enrollment.student_full_name = (
+                student.get_full_name() if student.first_name else student.username
+            )
+
+        context["enrollments"] = enrollments
+        return context

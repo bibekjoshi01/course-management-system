@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  View Enrollments
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h2 class="text-center mb-4">View Enrollments</h2>
+
+    <div class="mb-4 text-end">
+      <a href="{% url 'add_enrollment' %}" class="btn btn-primary"><i class="fas fa-plus"></i>&nbsp; Add Enrollment</a>
+    </div>
+
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Student</th>
+          <th>Course Name</th>
+          <th>Enrollment Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for enrollment in enrollments %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ enrollment.student }}</td>
+            <td>{{ enrollment.course }}</td>
+            <td>{{ enrollment.enrollment_date }}</td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="4" class="text-center">No enrollments available.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
