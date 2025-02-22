@@ -3,7 +3,7 @@ from .views import AddCategoryView, AddCourseView, CategoryListView, CourseListV
 
 urlpatterns = [
     path("add-category/", AddCategoryView.as_view(), name="add_category"),
-    path("categories/", CategoryListView.as_view(), name="view_categories"),
+    path("categories/", CategoryListView.as_view(), name="list_categories"),
     path("add-course/", AddCourseView.as_view(), name="add_course"),
-    path("courses/", CourseListView.as_view(), name="view_courses"),
+    path("courses/", CourseListView.as_view(), name="list_courses"),
 ]

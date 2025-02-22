@@ -16,6 +16,7 @@ urlpatterns = [
     # path("", TemplateView.as_view(template_name="home.html"), name="dasboard"),
     path("", DashboardView.as_view(), name="dashboard"),
     path("course/", include("src.course.urls"), name="course"),
+    path("student/", include("src.student.urls"), name="student"),
     # Media files
     * static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
 ]
