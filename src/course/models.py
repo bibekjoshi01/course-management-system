@@ -220,15 +220,6 @@ class QuizAnswer(AbstractInfoModel):
         verbose_name = _("Answer")
         verbose_name_plural = _("Answers")
 
-    def clean(self):
-        """Ensures that at least one correct answer exists for the question."""
-        if not self.answers.filter(is_correct=True).exists():
-            raise ValidationError(_("At least one answer must be correct."))
-
-    def save(self, *args, **kwargs):
-        # Ensure validation runs before saving
-        self.clean()
-        super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         return f"{self.text} ({'Correct' if self.is_correct else 'Wrong'})"
