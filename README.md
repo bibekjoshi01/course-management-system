@@ -26,7 +26,7 @@ This is a simple course management system built with Django. It includes feature
 
 4. **Configuration**:
 
-- Make sure you have `.env` with proper required variables listed in
+- Make sure you have `.env` with proper required variables listed in `.env.example`
 - Update `.env` with your Google SMTP credentials for email functionality.
 
 5. **Apply migrations**:
