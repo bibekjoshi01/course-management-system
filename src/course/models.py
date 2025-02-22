@@ -74,6 +74,9 @@ class Course(AbstractInfoModel):
         related_name="courses",
         help_text=_("Category to which the course belongs."),
     )
+    is_published = models.BooleanField(
+        _("Publised"), default=True, help_text="whether the course is published or not."
+    )
 
     class Meta:
         indexes = [
@@ -103,14 +106,20 @@ class CourseVideo(AbstractInfoModel):
     )
     video_file = models.FileField(
         _("Video File"),
-        upload_to="videos/",
+        upload_to="course/videos/",
         validators=[validate_video_file],
         help_text=_("Upload only .mp4 files with a maximum size of 50MB."),
+    )
+    order = models.PositiveIntegerField(
+        _("Order"),
+        default=0,
+        help_text=_("Defines the sequence of this content in the course."),
     )
 
     class Meta:
         verbose_name = _("Course Video")
         verbose_name_plural = _("Course Videos")
+        ordering = ["order"]
 
     def __str__(self) -> str:
         return self.title
@@ -133,26 +142,29 @@ class CourseDocument(AbstractInfoModel):
     )
     document_file = models.FileField(
         _("Document File"),
-        upload_to="documents/",
+        upload_to="course/documents/",
         validators=[validate_document_file],
         help_text=_("Upload only .pdf files with a maximum size of 10MB."),
     )
-
+    order = models.PositiveIntegerField(
+        _("Order"),
+        default=0,
+        help_text=_("Defines the sequence of this content in the course."),
+    )
+    
     class Meta:
         verbose_name = _("Course Document")
         verbose_name_plural = _("Course Documents")
+        ordering = ["order"]
 
     def __str__(self) -> str:
         return self.title
 
 
-
 class CourseQuiz(AbstractInfoModel):
     """Represents a Quiz related to a Course."""
 
-    course = models.ForeignKey(
-        Course, on_delete=models.CASCADE, related_name="quizzes"
-    )
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="quizzes")
     title = models.CharField(
         _("Quiz Title"),
         max_length=255,
@@ -184,12 +196,12 @@ class QuizQuestion(AbstractInfoModel):
         verbose_name_plural = _("Questions")
 
     def __str__(self) -> str:
-        return self.text[:100]  
+        return self.text[:100]
 
 
 class QuizAnswer(AbstractInfoModel):
     """Represents an Answer associated with a Question."""
-    
+
     question = models.ForeignKey(
         QuizQuestion, on_delete=models.CASCADE, related_name="answers"
     )
@@ -207,6 +219,16 @@ class QuizAnswer(AbstractInfoModel):
     class Meta:
         verbose_name = _("Answer")
         verbose_name_plural = _("Answers")
+
+    def clean(self):
+        """Ensures that at least one correct answer exists for the question."""
+        if not self.answers.filter(is_correct=True).exists():
+            raise ValidationError(_("At least one answer must be correct."))
+
+    def save(self, *args, **kwargs):
+        # Ensure validation runs before saving
+        self.clean()
+        super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         return f"{self.text} ({'Correct' if self.is_correct else 'Wrong'})"

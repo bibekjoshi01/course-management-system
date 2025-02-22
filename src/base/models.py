@@ -21,7 +21,9 @@ class AbstractInfoModel(models.Model):
         editable=False,
     )
     updated_at = models.DateTimeField(_("date updated"), auto_now=True)
-    created_by = models.ForeignKey("user.User", on_delete=models.PROTECT)
+    created_by = models.ForeignKey(
+        "user.User", null=True, blank=True, on_delete=models.PROTECT
+    )
     is_active = models.BooleanField(
         _("active"),
         default=True,
@@ -34,13 +36,18 @@ class AbstractInfoModel(models.Model):
         _("archived"),
         default=False,
         help_text=_(
-            "Designates whether this object should be treated as delected. "
+            "Designates whether this object should be treated as deleted. "
             "Unselect this instead of deleting instances.",
         ),
     )
 
     class Meta:
         abstract = True
+
+    def save(self, *args, **kwargs):
+        if self.is_archived and self.is_active: 
+            self.is_active = False
+        super().save(*args, **kwargs)
 
     def get_upload_path(self, upload_path, filename):
         return f"{upload_path}/{filename}"
