@@ -4,6 +4,8 @@ This is a simple course management system built with Django. It includes feature
 
 ### Follow the below step to run the project
 
+**Note**: Make sure postgres and python are installed in your system. 
+
 1. **Clone the repository**:
 
    ```bash
@@ -54,3 +56,4 @@ This is a simple course management system built with Django. It includes feature
 
 9. **Access the Dashboard**
    - Open Dashboard: `https://127.0.0.1:8000`
+

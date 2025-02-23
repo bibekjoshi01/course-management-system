@@ -1,0 +1,40 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - cms_db
+    env_file:
+      - .env
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings
+
+    develop:
+      watch:
+        - action: rebuild
+          path: .
+
+  cms_db:
+    image: postgres
+    restart: always
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - postgres_cms_data:/var/lib/postgresql/data
+    expose:
+      - 5432
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  
+volumes:
+  postgres_cms_data:
